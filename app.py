@@ -11,73 +11,11 @@ import pp
 def say(*args):
 	pp(args)
 
-print = say
-
 
 SCOPES = ["https://www.googleapis.com/auth/calendar.readonly","https://www.googleapis.com/auth/calendar.readonly"]
 
 
-
-def getCalendars(creds):
-	try:
-		service = build("calendar", "v3", credentials=creds)
-		print("Getting the list of calendars")
-		calendars_result = service.calendarList().list().execute()
-
-		calendars = calendars_result.get('items', [])
-
-		if not calendars:
-			print('No calendars found.')
-			return None
-		
-		return calendars
-
-		for calendar in calendars:
-			summary = calendar['summary']
-			id = calendar['id']
-			primary = "Primary" if calendar.get('primary') else ""
-			print("%s\t%s\t%s" % (summary, id, primary))
-
-	except HttpError as error:
-		print(f"An error occurred: {error}")
-		return None
-
-
-def getEvents(creds, calendarId):
-	try:
-		service = build("calendar", "v3", credentials=creds)
-		print(f"Getting the upcoming 10 events from calendar {calendarId}")
-		now = datetime.datetime.utcnow().isoformat() + "Z"  # 'Z' indicates UTC time
-		events_result = (
-			service.events()
-			.list(
-				calendarId=calendarId,
-				timeMin=now,
-				maxResults=10,
-				singleEvents=True,
-				orderBy="startTime",
-			)
-			.execute()
-		)
-		events = events_result.get("items", [])
-
-		if not events:
-			print("No upcoming events found.")
-			return
-
-		# Prints the start and name of the next 10 events
-		for event in events:
-			start = event["start"].get("dateTime", event["start"].get("date"))
-			print(start, event["summary"])
-
-	except HttpError as error:
-		print(f"An error occurred: {error}")
-
-
-def main():
-	"""Shows basic usage of the Google Calendar API.
-	Prints the start and name of the next 10 events on the user's calendar.
-	"""
+def setCreds():
 	creds = None
 	# The file token.json stores the user's access and refresh tokens, and is
 	# created automatically when the authorization flow completes for the first
@@ -96,13 +34,69 @@ def main():
 		# Save the credentials for the next run
 		with open("token.json", "w") as token:
 			token.write(creds.to_json())
+	return creds
 
+
+def getCalendars(creds):
+	try:
+		service = build("calendar", "v3", credentials=creds)
+		calendars_result = service.calendarList().list().execute()
+
+		calendars = calendars_result.get('items', [])
+
+		if not calendars:
+			print('No calendars found.')
+			return None
+		return calendars
+
+	except HttpError as error:
+		print(f"An error occurred: {error}")
+		return None
+
+
+def getEvents(creds, calendarId, results=10):
+	try:
+		service = build("calendar", "v3", credentials=creds)
+		now = datetime.datetime.utcnow().isoformat() + "Z"  # 'Z' indicates UTC time
+		events_result = (
+			service.events()
+			.list(
+				calendarId=calendarId,
+				timeMin=now,
+				maxResults=results,
+				singleEvents=True,
+				orderBy="startTime",
+			)
+			.execute()
+		)
+		events = events_result.get("items", [])
+
+		if not events:
+			# print("No upcoming events found.")
+			return None 
+		return events 
+
+	except HttpError as error:
+		print(f"An error occurred: {error}")
+		return None
+
+
+def main():
+	creds = setCreds()
 
 	cals = getCalendars(creds)
-	if cals:
-		for cal in cals:
-			print(cal['summary'])
-			getEvents(creds, cal['id'])
+	if not cals:
+		print("No calendars found")
+		return
+	
+	for cal in cals:
+		print(cal['summary'])
+		events = getEvents(creds, cal['id'])
+		if events:
+			for event in events:
+				say(event['summary'], event['start'].get("date"))
+		else:
+			print("No events found")
 
 
 if __name__ == "__main__":
