@@ -107,12 +107,13 @@ def main():
 			events = getEvents(creds, cal['id'], 5)
 			if events:
 				for event in events:
-					# say(event)
-					say(cal['summary'], event['summary'], event['start'].get("date"))
+					say(event)
+					break 
+					# say(cal['summary'], event['summary'], event['start'].get("date"))
 			else:
 				print("No events found : ", cal['summary'])
-
+			
+		
 
 if __name__ == "__main__":
 	main()
-	# print(len(daysThisMonth()))

@@ -1,7 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap');
+
+
 :root {
-	--highlight1: rgb(128, 196, 241);
-	--highlight2: rgb(233 32 99);
-	--highlight3: rgb(255, 70, 132);
+    /* --highcolor1: rgb(252, 143, 81); */
+	--highcolor1: rgb(128, 164, 241);
+	--highcolor2: rgb(233, 106, 32);
+	--highcolor3: rgb(255, 70, 132);
 	--backcolor1: rgb(13 17 23);
 	--backcolor2: rgb(9 12 14);
 	--backcolor3: rgb(39 39 39);
@@ -10,8 +14,117 @@
 body {
 	background-color: var(--backcolor2);
 	color: gainsboro;
-    
-	margin: 0;
+    margin: 0;
 	-ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+
+    font-family: 'Roboto', sans-serif;
+}
+
+.header {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: baseline;
+
+    background-color: var(--backcolor3);
+}
+
+.headerdate {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.headerdate p {
+    font-size: 2rem;
+    color: var(--highcolor1);
+    margin: 1rem;
+    margin-right: .5rem;
+}
+
+.headerupdate {
+    /* justify-content: right; */
+    display: flex;
+    flex-direction: row;
+    /* margin-right: 2rem; */
+    
+    /* border-bottom: 1px solid rgb(51, 51, 51); */
+}
+
+.headerupdate p {
+    font-size: 1rem;
+    color: var(--highcolor2);
+    color: gray;
+    margin: 5px;
+    margin-left: .5rem;
+    
+}
+
+.weeknum {
+    justify-content: left;
+    margin-left: 2rem;
+}
+
+
+
+
+.entry {
+    height: 70px;
+    background-color: var(--backcolor1);
+    margin: 5px;
+}
+
+.entry .info {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 100px;
+    grid-template-rows: 45px 25px;
+}
+
+.info p {
+    margin: 0;
+    align-self: end;
+}
+
+.entry .summary {
+    font-size: 1.6rem;
+    margin-left: 2rem;
+}
+
+.entry .start {
+    grid-row: 1;
+    grid-column: 2;
+    font-size: 1.6rem;
+}
+
+.entry .end {
+    grid-row: 2;
+    grid-column: 2; 
+    margin-bottom: 5px;
+    color: gray;
+    font-size: 1.2rem;
+}
+
+.entry .calendar {
+    grid-row: 2;
+    grid-column: 1;
+    margin-left: 2rem;
+    margin-bottom: 5px;
+
+    color: gray;
+    font-size: 1.2rem;
+}
+
+.entry .timebar {
+    position: relative;
+    z-index: 1;
+    top: -100%;
+
+    border-radius: 15px;
+
+    width: 500px;
+    height: 100%;
+    background-color: var(--highcolor3);
+    opacity: 0.5;
 }
