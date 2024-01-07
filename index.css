@@ -1,0 +1,17 @@
+:root {
+	--highlight1: rgb(128, 196, 241);
+	--highlight2: rgb(233 32 99);
+	--highlight3: rgb(255, 70, 132);
+	--backcolor1: rgb(13 17 23);
+	--backcolor2: rgb(9 12 14);
+	--backcolor3: rgb(39 39 39);
+}
+
+body {
+	background-color: var(--backcolor2);
+	color: gainsboro;
+    
+	margin: 0;
+	-ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}

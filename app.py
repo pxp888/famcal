@@ -13,6 +13,20 @@ def say(*args):
 
 
 SCOPES = ["https://www.googleapis.com/auth/calendar.readonly","https://www.googleapis.com/auth/calendar.readonly"]
+hideCalendars = ('Muslim Holidays','JOHN PERRINE')
+
+def daysThisMonth():
+	now = datetime.datetime.now()
+	year = now.year
+	month = now.month
+	days = []
+	for day in range(1, 32):
+		try:
+			d = datetime.datetime(year, month, day)
+			days.append(d)
+		except ValueError:
+			break
+	return days
 
 
 def setCreds():
@@ -30,7 +44,7 @@ def setCreds():
 			flow = InstalledAppFlow.from_client_secrets_file(
 			"credentials.json", SCOPES
 			)
-		creds = flow.run_local_server(port=0)
+			creds = flow.run_local_server(port=0)
 		# Save the credentials for the next run
 		with open("token.json", "w") as token:
 			token.write(creds.to_json())
@@ -73,8 +87,8 @@ def getEvents(creds, calendarId, results=10):
 
 		if not events:
 			# print("No upcoming events found.")
-			return None 
-		return events 
+			return None
+		return events
 
 	except HttpError as error:
 		print(f"An error occurred: {error}")
@@ -85,19 +99,20 @@ def main():
 	creds = setCreds()
 
 	cals = getCalendars(creds)
-	if not cals:
-		print("No calendars found")
-		return
-	
-	for cal in cals:
-		print(cal['summary'])
-		events = getEvents(creds, cal['id'])
-		if events:
-			for event in events:
-				say(event['summary'], event['start'].get("date"))
-		else:
-			print("No events found")
+	if cals:
+		for cal in cals:
+			if cal['summary'] in hideCalendars: continue
+			# print(cal['summary'])
+
+			events = getEvents(creds, cal['id'], 5)
+			if events:
+				for event in events:
+					# say(event)
+					say(cal['summary'], event['summary'], event['start'].get("date"))
+			else:
+				print("No events found : ", cal['summary'])
 
 
 if __name__ == "__main__":
 	main()
+	# print(len(daysThisMonth()))
