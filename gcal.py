@@ -93,3 +93,20 @@ def getEvents(creds, calendarId, results=10):
 	except HttpError as error:
 		print(f"An error occurred: {error}")
 		return None
+
+
+def calmain():
+	creds = setCreds()
+
+	cals = getCalendars(creds)
+	if cals:
+		for cal in cals:
+			if cal['summary'] in hideCalendars: continue
+
+			events = getEvents(creds, cal['id'], 5)
+			if events:
+				for event in events:
+					say(cal['summary'], event['summary'], event['start'].get("date"))
+			else:
+				print("No events found : ", cal['summary'])
+

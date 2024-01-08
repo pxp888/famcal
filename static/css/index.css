@@ -65,8 +65,9 @@ body {
     margin-left: 2rem;
 }
 
-
-
+.model {
+    display: none;
+}
 
 .entry {
     height: 70px;
@@ -128,3 +129,4 @@ body {
     background-color: var(--highcolor3);
     opacity: 0.5;
 }
+
