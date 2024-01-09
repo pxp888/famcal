@@ -2,19 +2,18 @@
 
 
 :root {
-    /* --highcolor1: rgb(252, 143, 81); */
 	--highcolor1: rgb(128, 164, 241);
 	--highcolor2: rgb(233, 106, 32);
 	--highcolor3: rgb(255, 70, 132);
 	--backcolor1: rgb(13 17 23);
 	--backcolor2: rgb(9 12 14);
-	--backcolor3: rgb(39 39 39);
+    --backcolor3: rgb(24 24 24);
 
-    --calcol1: #f93f4c;
-    --calcol2: #d20043;
-    --calcol3: #f69d71;
-    --calcol4: #ffcc8d;
-    --calcol5: #ce086b;
+    --calcol1: #FFACE4;
+    --calcol2: #AB87FF;
+    --calcol3: #B4E1FF;
+    --calcol4: #F5FFC6;
+    --calcol5: #DB2955;
 }
 
 body {
@@ -46,15 +45,14 @@ body {
     color: var(--highcolor1);
     margin: 1rem;
     margin-right: .5rem;
+    
 }
 
 .headerupdate {
     /* justify-content: right; */
     display: flex;
     flex-direction: row;
-    /* margin-right: 2rem; */
-    
-    /* border-bottom: 1px solid rgb(51, 51, 51); */
+    margin-left: 1rem;
 }
 
 .headerupdate p {

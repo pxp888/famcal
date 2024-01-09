@@ -1,6 +1,8 @@
 from gcal import * 
 from flask import jsonify
 import hashlib
+import time 
+import threading 
 
 
 class Logic:
@@ -11,12 +13,21 @@ class Logic:
         self.fullevents = []
         self.hash = ''
 
-        self.gsync()
+        self.lock = threading.Lock()
+        self.thread = threading.Thread(target=self.sync_thread)
+        self.thread.start()
+
+
+    def sync_thread(self):
+        while True:
+            self.gsync()
+            time.sleep(600)
 
 
     def gsync(self):
-        self.calendars = getCalendars(self.creds)
-        for cal in self.calendars:
+        fullevents = []
+        calendars = getCalendars(self.creds)
+        for cal in calendars:
             if cal['summary'] in hideCalendars: continue
             events = getEvents(self.creds, cal['id'], 10)
             if events:
@@ -24,30 +35,34 @@ class Logic:
                     i['calname'] = cal['summary']
                 for event in events:
                     say(cal['summary'], event['summary'], event['start'].get("date"))
-                    self.fullevents.append(event)
+                    fullevents.append(event)
             else:
                 say(cal['summary'], "No upcoming events found.")
                 
-        self.hash = hashlib.md5(str(self.fullevents).encode('utf-8')).hexdigest()
+        hash = hashlib.md5(str(fullevents).encode('utf-8')).hexdigest()
+
+        self.lock.acquire()
+        self.calendars = calendars
+        self.fullevents = fullevents
+        self.hash = hash
+        self.lock.release()
 
 
     def sync(self, data):
-        print('synced')
-        print(data)
+        self.lock.acquire()
         response_data = { 't': 'sync_ack',
                         'hash': self.hash 
                         }
+        self.lock.release()
         return jsonify(response_data)
 
 
     def get_events(self, data):
-        print('get_events')
-        print(data)
-
+        self.lock.acquire()
         response_data = { 't': 'get_events_ack',
                         'events': self.fullevents, 
                         'hash': self.hash
                         }
+        self.lock.release()
         return jsonify(response_data)
-
 
