@@ -20,6 +20,8 @@ class Logic:
             if cal['summary'] in hideCalendars: continue
             events = getEvents(self.creds, cal['id'], 10)
             if events:
+                for i in events:
+                    i['calname'] = cal['summary']
                 for event in events:
                     say(cal['summary'], event['summary'], event['start'].get("date"))
                     self.fullevents.append(event)

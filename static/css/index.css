@@ -9,6 +9,12 @@
 	--backcolor1: rgb(13 17 23);
 	--backcolor2: rgb(9 12 14);
 	--backcolor3: rgb(39 39 39);
+
+    --calcol1: #f93f4c;
+    --calcol2: #d20043;
+    --calcol3: #f69d71;
+    --calcol4: #ffcc8d;
+    --calcol5: #ce086b;
 }
 
 body {
@@ -73,13 +79,14 @@ body {
     height: 70px;
     background-color: var(--backcolor1);
     margin: 5px;
+    overflow: hidden;
 }
 
 .entry .info {
     position: relative;
     z-index: 2;
     display: grid;
-    grid-template-columns: 1fr 100px;
+    grid-template-columns: 1fr 200px;
     grid-template-rows: 45px 25px;
 }
 
@@ -121,8 +128,9 @@ body {
     position: relative;
     z-index: 1;
     top: -100%;
-
-    border-radius: 15px;
+    left: 50%;
+    /* right: 200; */
+    border-radius: 5px;
 
     width: 500px;
     height: 100%;

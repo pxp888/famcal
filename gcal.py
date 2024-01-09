@@ -14,6 +14,8 @@ def say(*args):
 
 SCOPES = ["https://www.googleapis.com/auth/calendar.readonly","https://www.googleapis.com/auth/calendar.readonly"]
 hideCalendars = ('Muslim Holidays','JOHN PERRINE')
+hideCalendars = ()
+
 
 def daysThisMonth():
 	now = datetime.datetime.now()
@@ -103,7 +105,7 @@ def calmain():
 		for cal in cals:
 			if cal['summary'] in hideCalendars: continue
 
-			events = getEvents(creds, cal['id'], 5)
+			events = getEvents(creds, cal['id'], 10)
 			if events:
 				for event in events:
 					say(cal['summary'], event['summary'], event['start'].get("date"))
