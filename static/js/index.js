@@ -210,4 +210,6 @@ rfuncs['sync_ack'] = sync_ack;
 rfuncs['get_events_ack'] = get_events;
 
 sync();
+const interval = setInterval(sync, 1000*60*1);
+
 
