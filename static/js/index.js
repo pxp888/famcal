@@ -7,6 +7,7 @@ const rfuncs = {};
 
 const headerdate = document.getElementsByClassName('headerdate');
 
+
 let hash = '';
 let allDayEvents = [];
 let timedEvents = [];
@@ -193,6 +194,7 @@ async function get_events(data) {
     }
 
     set_display_date(now);
+    $('.outarea')[0].innerHTML = '';
 
     for (let i=0; i<allDayEvents.length; i++) {
         ev = allDayEvents[i];
