@@ -5,10 +5,9 @@ const say = (...msgs) => console.log(...msgs);
 const URL="/test";
 const rfuncs = {};
 
-let hash = '';
-
 const headerdate = document.getElementsByClassName('headerdate');
 
+let hash = '';
 let allDayEvents = [];
 let timedEvents = [];
 
@@ -64,20 +63,10 @@ function set_display_date(now) {
     const dateelement = $('.headerdate').children('p')[1];
     dayelement.innerHTML = `${day}`;
     dateelement.innerHTML = `${month} ${date}`;
-}
 
-
-async function sync() {
-    const m = { 't': 'sync' };
-    sendmsg(m);
-}
-
-
-async function sync_ack(data) {
-    if (data['hash'] != hash) {
-        const m = { 't': 'get_events' };
-        sendmsg(m);
-    }
+    const update = $('.headerupdate')[0];
+    update.innerHTML = `Last updated: ${now.getHours()}:${now.getMinutes()}`;
+    update.style.color = 'gray';
 }
 
 
@@ -173,6 +162,20 @@ function show_timed_event(ev) {
     color = hashStringToNumber(ev['calname']);
     timebar.style.backgroundColor = `var(--calcol${color})`;
     say(color);
+}
+
+
+async function sync() {
+    const m = { 't': 'sync' };
+    sendmsg(m);
+}
+
+
+async function sync_ack(data) {
+    if (data['hash'] != hash) {
+        const m = { 't': 'get_events' };
+        sendmsg(m);
+    }
 }
 
 
